@@ -1,0 +1,61 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="content"><h1>CARD GAME</h1></div>
+    </div>
+
+    <div class="main">
+      <div class="left">
+        <p>Choose level</p>
+        <form class="game-level">
+          <input type="radio" name="level" value="easy" checked>
+          <label for="">Easy</label> <br>
+          <input type="radio" name="level" value="normal" >
+          <label for="">Normal</label> <br>
+          <input type="radio" name="level" value="hard" >
+          <label for="">Hard</label> <br><br>
+          <button type="button" class="start-game">START ?</button>
+          <button type="button" class="reset-game" style="display: none;">
+            RESET ?
+          </button>
+        </form>
+        <!-- <div class="game-level">
+          <input type="radio" name="level" value="easy" id="easy" checked>
+          <label for="">Easy</label>
+          <input type="radio" name="level" value="normal" id="normal" >
+          <label for="">Normal</label>
+          <input type="radio" name="level" value="hard" id="hard">
+          <label for="">Hard</label>
+        </div>
+        <div class="start-game" >
+          START ?
+        </div>
+        <div class="reset-game" style="display: none;">
+          RESET ?
+        </div> -->
+      </div>
+      <div class="center">
+        <div class="container"></div>
+      </div>
+      <div class="right">       
+        <div class="my-progress">
+          <div class="time-countdown">       
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <p></p>
+        <button class="close">Close</button>
+      </div>
+    </div>
+  </body>
+  <script src="main.js"></script>
+</html>
