@@ -3,37 +3,51 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <title>Document</title>
   </head>
   <body>
-    <div class="content"><h1>CARD GAME</h1></div>
-    </div>
-
     <div class="main">
-      <div class="left">
-        <p>Choose level</p>
-        <form class="game-level">
-          <input type="radio" name="level" value="easy" checked>
-          <label for="">Easy</label> <br>
-          <input type="radio" name="level" value="normal" >
-          <label for="">Normal</label> <br>
-          <input type="radio" name="level" value="hard" >
-          <label for="">Hard</label> <br><br>
-          <button type="button" class="start-game">START ?</button>
-          <button type="button" class="reset-game" style="display: none;">
-            RESET ?
-          </button>
-        </form>
-      </div>
       <div class="center">
+        <div class="game-level">
+          <p>Select difficult</p>
+          <form>
+            <div class="level">
+              <input type="radio" name="level" value="easy" checked />
+              <label for="">Easy</label> <br />
+            </div>
+            <div class="level">
+              <input type="radio" name="level" value="normal" />
+              <label for="">Normal</label> <br />
+            </div>
+            <div class="level">
+              <input type="radio" name="level" value="hard" />
+              <label for="">Hard</label> <br /><br />
+            </div>
+            <button type="button" class="start-game">START</button>
+            <!-- <button type="button" class="reset-game" style="display: none">
+              RESET ?
+            </button> -->
+          </form>
+        </div>
         <div class="container"></div>
-      </div>
-      <div class="right">       
-        <div class="my-progress">
-          <div class="time-countdown">       
+        <div class="center-play-progress">
+          <i
+            class="fa-solid fa-clock-rotate-left fa-3x"
+            style="color: #f5f5f5"
+          ></i>
+          <div class="my-progress">
+            <div class="time-countdown"></div>
           </div>
         </div>
       </div>
+      <div class="right"></div>
     </div>
     <div id="myModal" class="modal">
       <!-- Modal content -->

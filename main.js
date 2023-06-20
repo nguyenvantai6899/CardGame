@@ -8,7 +8,7 @@ var level = document.querySelector(".game-level");
 
 var timeOut = 0;
 var count = 0;
-var countDown = 0;
+var countDown = 100;
 var interval;
 var correct = 0;
 var item = [];
@@ -21,52 +21,31 @@ console.log("%cDừng tay bạn ơi", css);
 //choose level
 document.querySelector('.start-game').addEventListener("click",(e) => {
   var value = document.querySelector('input[name="level"]:checked').value;
-  console.log(value);
   if (value) {
-    if (value === "easy") {
-      images = ["reactjs", "nodejs"];
-    } else if (value === "normal") {
-      images = ["reactjs", "nodejs", "csharp", "c", "java"];
-    } else {
-      images = [
-        "reactjs",
-        "nodejs",
-        "csharp",
-        "c",
-        "java",
-        "python",
-        "ruby",
-        "dart",
-        "php",
-        "js",
+    images = [
+      "reactjs",
+      "nodejs",
+      "csharp",
+      "cplus",
+      "java",
+      "python",
+      "ruby",
+      "dart",
+      "php",
+      "js",
       ];
+    if (value === "easy") {
+      shuffle(images);
+      images = [images[0],images[1],images[2]];
+    } else if (value === "normal") {
+      images = [images[3],images[4],images[5],images[6],images[1],images[2]];
+    } else {
+      images = [images[0],images[1],images[2],images[3],images[4],images[5],images[6],images[7],images[8]];
     }
   }
 })
 
-// level.addEventListener("click", (e) => {
-//   var value = e.target.value;
-//   if (value) {
-//     if (value === "easy") {
-//       images = ["reactjs", "nodejs"];
-//     } else if (value === "normal") {
-//       images = ["reactjs", "nodejs", "csharp", "c"];
-//     } else {
-//       images = [
-//         "reactjs",
-//         "nodejs",
-//         "csharp",
-//         "c",
-//         "java",
-//         "python",
-//         "ruby",
-//         "dart",
-//         "php",
-//         "js",
-//       ];
-//     }
-//   }
-// });
+
 
 //shuffle array
 var shuffle = (arrShuffle) => {
@@ -92,14 +71,29 @@ var checkClass = () => {
   for (let i = 0; i < classList.length; i++) {
     if (check(item[0], item[1])) {
       classList[i].className = "correct";
+      renderImg('correct', document.querySelector('.correct').dataset.item);// maybe use css
       correct++;
     } else {
       classList[i].className = "incorrect";
     }
   }
+  let classIncorrect = document.querySelectorAll('.incorrect');
+  for (let i = 0; i < classIncorrect.length; i++) {
+      classIncorrect[i].style.background = '';
+    }
   item = [];
   timeOut = 0;
 };
+
+// load image for cards // maybe use css
+var renderImg = (className, dataItem) =>{
+  let getClassName = document.querySelectorAll(`.${className}[data-item="${dataItem}"]`);
+  for (let i = 0; i < getClassName.length; i++) {
+    const element = getClassName[i];
+    element.style.background = `url("img/${dataItem}.png") left center no-repeat #fff`;
+    element.style.backgroundSize = '120px 180px';
+  }
+}
 
 //render cards and catch event 'click' on cards
 var renderCards = () => {
@@ -121,6 +115,7 @@ var renderCards = () => {
       } else {
         card.className = "flipped";
         item.push(e.target.dataset.item);
+        renderImg('flipped',e.target.dataset.item);// maybe use css        
         if (item.length > 1) {
           timeOut = setTimeout(() => {
             checkClass();
@@ -134,57 +129,61 @@ var renderCards = () => {
 //progress bar
 var progressBar = () => {
   interval = setInterval(() => {
-    countDown += 0.01;
-    timeCountdown.style.height = countDown + "%";
+    countDown -= 0.01;
+    timeCountdown.style.width = countDown + "%";
     win(correct);
   }, 6);
 };
 
 //start game
 startGame.addEventListener("click", (e) => {
-  startGame.style.display = "none";
-  resetGame.style.display = "block";
+
+  level.style.display = "none";
   renderCards();
   progressBar();
 });
 
 //restart
 var reStartGame = () => {
-  startGame.style.display = "block";
-  resetGame.style.display = "none";
+    // startGame.style.display = "block";
+    // resetGame.style.display = "none";
   clearInterval(interval);
-  countDown = 0;
+  countDown = 100;
   correct = 0;
-  timeCountdown.style.height = "0%";
+  timeCountdown.style.height = "100%";
   while (myCards.hasChildNodes()) {
     myCards.removeChild(myCards.firstChild);
   }
 };
 //reset game
-resetGame.addEventListener("click", (e) => {
-  reStartGame();
-});
+// resetGame.addEventListener("click", (e) => {
+//   reStartGame();
+// });
 
 //win the game
 var win = (quantityCorrecr) => {
-  if (quantityCorrecr == images.length * 2 && countDown < 100) {
+  if (quantityCorrecr == images.length * 2 && countDown > 0) {
+    clearInterval(interval);
     modal.style.display = "block";
     modal.children[0].children[0].innerHTML = "You won the game!";
-    reStartGame();
   }
-  if (countDown > 100) {
+  if (countDown < 0) {
+    clearInterval(interval);
     modal.style.display = "block";
     modal.children[0].children[0].innerHTML = "HAHA GÀ!";
-    reStartGame();
   }
 };
 //close model
 span.onclick = function () {
   modal.style.display = "none";
+  level.style.display = "block";
+  reStartGame();
 };
 
 window.onclick = function (event) {
   if (event.target == modal) {
     modal.style.display = "none";
+    level.style.display = "block";
+    reStartGame();
   }
 };
