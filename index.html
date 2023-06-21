@@ -17,7 +17,7 @@
       <div class="center">
         <div class="game-level">
           <p>Select difficult</p>
-          <form>
+          <!-- <form>
             <div class="level">
               <input type="radio" name="level" value="easy" checked />
               <label for="">Easy</label> <br />
@@ -31,10 +31,15 @@
               <label for="">Hard</label> <br /><br />
             </div>
             <button type="button" class="start-game">START</button>
-            <!-- <button type="button" class="reset-game" style="display: none">
+            <button type="button" class="reset-game" style="display: none">// removed
               RESET ?
-            </button> -->
-          </form>
+            </button>
+          </form> -->
+            <button type="button" class="level" value ="easy">Easy</button><br>
+            <button type="button" class="level" value ="normal">Normal</button><br>
+            <button type="button" class="level" value ="hard">Hard</button><br>
+            <button type="button" class="start-game">START</button>
+
         </div>
         <div class="container"></div>
         <div class="center-play-progress">
@@ -47,15 +52,54 @@
           </div>
         </div>
       </div>
-      <div class="right"></div>
+      <div class="right">
+        <div class="score">
+          <div class="score-level">
+            <div class="score-level-title">Difficult</div>
+            <div class="score-level-chosen"></div>
+          </div>
+          <div class="score-level">
+            <div class="score-level-title">Score</div>
+            <div class="score-achieve">
+            </div>
+          </div>
+        </div>
+        <div class="leader-board">
+          <i class="fa-solid fa-ranking-star fa-2x" ></i>
+          <span class="my-leader-board" style="margin-left: 10px;">
+            Leaderboard
+          </span>
+        </div>
+      </div>
     </div>
     <div id="myModal" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
         <p></p>
+        <p></p>
         <button class="close">Close</button>
       </div>
     </div>
+
+    <div id="modalLeaderboard" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Score</th>
+              <th>Level</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+            <tr></tr>
+          </tbody>
+        </table>
+        <button class="close">Close</button>
+      </div>
+    </div>
+
   </body>
   <script src="main.js"></script>
 </html>

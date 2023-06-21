@@ -3,8 +3,12 @@ var startGame = document.querySelector(".start-game");
 var resetGame = document.querySelector(".reset-game");
 var timeCountdown = document.querySelector(".time-countdown");
 var modal = document.getElementById("myModal");
-var span = document.getElementsByClassName("close")[0];
+var span = document.getElementsByClassName("close");
 var level = document.querySelector(".game-level");
+var chooseLevel = document.querySelectorAll(".level");
+let score = document.querySelector(".score-achieve");
+var modalLB = document.getElementById("modalLeaderboard");
+var leaderboard = document.querySelector(".leader-board");
 
 var timeOut = 0;
 var count = 0;
@@ -18,9 +22,27 @@ var css =
   "text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue; font-size: 40px; color:red;";
 console.log("%cDừng tay bạn ơi", css);
 
-//choose level
-document.querySelector('.start-game').addEventListener("click",(e) => {
-  var value = document.querySelector('input[name="level"]:checked').value;
+//radio button level
+var chooseLevelButton = () => {
+  for (let i = 0; i < chooseLevel.length; i++) {
+    const element = chooseLevel[i];
+    element.dataset.item = "unchecked";
+    element.addEventListener("click", (e) => {
+      element.dataset.item = "checked";
+      for (let j = 0; j < chooseLevel.length; j++) {
+        const element2 = chooseLevel[j];
+        if (element !== element2) {
+          element2.dataset.item = "unchecked";
+        }
+      }
+    });
+  }
+  chooseLevel[0].dataset.item = "checked";
+};
+chooseLevelButton();
+//render card for level
+document.querySelector(".start-game").addEventListener("click", (e) => {
+  var value = document.querySelector('button[data-item ="checked"]').value;
   if (value) {
     images = [
       "reactjs",
@@ -33,19 +55,36 @@ document.querySelector('.start-game').addEventListener("click",(e) => {
       "dart",
       "php",
       "js",
-      ];
+    ];
     if (value === "easy") {
       shuffle(images);
-      images = [images[0],images[1],images[2]];
+      images = [images[0], images[1], images[2]];
     } else if (value === "normal") {
-      images = [images[3],images[4],images[5],images[6],images[1],images[2]];
+      shuffle(images);
+      images = [
+        images[3],
+        images[4],
+        images[5],
+        images[6],
+        images[1],
+        images[2],
+      ];
     } else {
-      images = [images[0],images[1],images[2],images[3],images[4],images[5],images[6],images[7],images[8]];
+      shuffle(images);
+      images = [
+        images[0],
+        images[1],
+        images[2],
+        images[3],
+        images[4],
+        images[5],
+        images[6],
+        images[7],
+        images[8],
+      ];
     }
   }
-})
-
-
+});
 
 //shuffle array
 var shuffle = (arrShuffle) => {
@@ -71,29 +110,32 @@ var checkClass = () => {
   for (let i = 0; i < classList.length; i++) {
     if (check(item[0], item[1])) {
       classList[i].className = "correct";
-      renderImg('correct', document.querySelector('.correct').dataset.item);// maybe use css
+      renderImg("correct", document.querySelector(".correct").dataset.item); // maybe use css
       correct++;
+      scoreCal();
     } else {
       classList[i].className = "incorrect";
     }
   }
-  let classIncorrect = document.querySelectorAll('.incorrect');
+  let classIncorrect = document.querySelectorAll(".incorrect");
   for (let i = 0; i < classIncorrect.length; i++) {
-      classIncorrect[i].style.background = '';
-    }
+    classIncorrect[i].style.background = "";
+  }
   item = [];
   timeOut = 0;
 };
 
 // load image for cards // maybe use css
-var renderImg = (className, dataItem) =>{
-  let getClassName = document.querySelectorAll(`.${className}[data-item="${dataItem}"]`);
+var renderImg = (className, dataItem) => {
+  let getClassName = document.querySelectorAll(
+    `.${className}[data-item="${dataItem}"]`
+  );
   for (let i = 0; i < getClassName.length; i++) {
     const element = getClassName[i];
     element.style.background = `url("img/${dataItem}.png") left center no-repeat #fff`;
-    element.style.backgroundSize = '120px 180px';
+    element.style.backgroundSize = "120px 180px";
   }
-}
+};
 
 //render cards and catch event 'click' on cards
 var renderCards = () => {
@@ -115,7 +157,7 @@ var renderCards = () => {
       } else {
         card.className = "flipped";
         item.push(e.target.dataset.item);
-        renderImg('flipped',e.target.dataset.item);// maybe use css        
+        renderImg("flipped", e.target.dataset.item); // maybe use css
         if (item.length > 1) {
           timeOut = setTimeout(() => {
             checkClass();
@@ -137,16 +179,20 @@ var progressBar = () => {
 
 //start game
 startGame.addEventListener("click", (e) => {
-
+  score.innerHTML = "";
+  document.querySelector(".score-level-chosen").innerHTML = "";
   level.style.display = "none";
+  document.querySelector(".score-level-chosen").innerHTML = document
+    .querySelector('button[data-item ="checked"]')
+    .value.toUpperCase();
   renderCards();
   progressBar();
 });
 
 //restart
 var reStartGame = () => {
-    // startGame.style.display = "block";
-    // resetGame.style.display = "none";
+  // startGame.style.display = "block";
+  // resetGame.style.display = "none";
   clearInterval(interval);
   countDown = 100;
   correct = 0;
@@ -160,12 +206,17 @@ var reStartGame = () => {
 //   reStartGame();
 // });
 
-//win the game
+//modal win the game
 var win = (quantityCorrecr) => {
   if (quantityCorrecr == images.length * 2 && countDown > 0) {
     clearInterval(interval);
     modal.style.display = "block";
     modal.children[0].children[0].innerHTML = "You won the game!";
+    modal.children[0].children[1].innerHTML = "Score: " + score.textContent;
+    lBRank(
+      score.textContent,
+      document.querySelector('button[data-item ="checked"]').value.toUpperCase()
+    );
   }
   if (countDown < 0) {
     clearInterval(interval);
@@ -174,16 +225,97 @@ var win = (quantityCorrecr) => {
   }
 };
 //close model
-span.onclick = function () {
-  modal.style.display = "none";
-  level.style.display = "block";
-  reStartGame();
-};
+for (let i = 0; i < span.length; i++) {
+  const element = span[i];
+  element.onclick = function () {
+    modal.style.display = "none";
+    modalLB.style.display = "none";
+    level.style.display = "block";
+    reStartGame();
+  };
+}
 
 window.onclick = function (event) {
   if (event.target == modal) {
     modal.style.display = "none";
+    modalLB.style.display = "none";
     level.style.display = "block";
     reStartGame();
+  }
+};
+
+//score
+var scoreCal = () => {
+  let cD;
+  score.innerHTML = correct * 100;
+  if (correct === images.length * 2) {
+    cD = Math.floor(countDown);
+    var pFScore = parseFloat(score.textContent);
+    score.innerHTML = pFScore + cD * 10;
+  }
+};
+
+leaderboard.addEventListener("click", (e) => {
+  modalLB.style.display = "block";
+});
+
+//leaderboard rank
+// let scoreArr = [];
+// let tbody = document.getElementById('tbody');
+// let trElement = document.getElementsByTagName('tr');
+// var lBRank = (score) => {
+//   scoreArr.push(score);
+//   scoreArr = scoreArr.sort();
+//   while (tbody.hasChildNodes()) {
+//     tbody.removeChild(tbody.firstChild);
+//   }
+//   let j = 0;
+//   for (let i = scoreArr.length - 1; i >= 0; i--) {
+//     let tr = document.createElement("tr");
+//     tbody.appendChild(tr);
+//     let td1 = document.createElement("td");
+//     let td2 = document.createElement("td");
+//     let td3 = document.createElement("td");
+//     td1.innerText = ++j ;
+//     td2.innerText = scoreArr[i];
+//     td3.innerText = new Date();
+//     tr.appendChild(td1);
+//     tr.appendChild(td2);
+//     tr.appendChild(td3);
+//   }
+// }
+//object contructor
+class Player {
+  constructor(score, level) {
+    this.score = score;
+    this.level = level;
+  }
+}
+//leaderboard rank
+let tbody = document.getElementById('tbody');
+let trElement = document.getElementsByTagName('tr');
+let playerArr = [];
+var lBRank = (score, level) => {
+  let lB = new Player(score, level);
+  playerArr.push(lB);
+  playerArr = playerArr.sort((a, b) => {
+    return b.score - a.score;
+  });
+  while (tbody.hasChildNodes()) {
+    tbody.removeChild(tbody.firstChild);
+  }
+  let j = 0;
+  for (let i = 0; i < playerArr.length; i++) {
+    let tr = document.createElement("tr");
+    tbody.appendChild(tr);
+    let td1 = document.createElement("td");
+    let td2 = document.createElement("td");
+    let td3 = document.createElement("td");
+    td1.innerText = i+1;
+    td2.innerText = playerArr[i].score;
+    td3.innerText = playerArr[i].level;
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    tr.appendChild(td3);
   }
 };
