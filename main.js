@@ -12,7 +12,7 @@ var leaderboard = document.querySelector(".leader-board");
 
 var timeOut = 0;
 var count = 0;
-var countDown = 100;
+var countDown ;
 var interval;
 var correct = 0;
 var item = [];
@@ -59,6 +59,7 @@ document.querySelector(".start-game").addEventListener("click", (e) => {
     if (value === "easy") {
       shuffle(images);
       images = [images[0], images[1], images[2]];
+      // images = [];
     } else if (value === "normal") {
       shuffle(images);
       images = [
@@ -170,6 +171,7 @@ var renderCards = () => {
 
 //progress bar
 var progressBar = () => {
+  countDown = 100;
   interval = setInterval(() => {
     countDown -= 0.01;
     timeCountdown.style.width = countDown + "%";
@@ -215,13 +217,14 @@ var win = (quantityCorrecr) => {
     modal.children[0].children[1].innerHTML = "Score: " + score.textContent;
     lBRank(
       score.textContent,
-      document.querySelector('button[data-item ="checked"]').value.toUpperCase()
+      document.querySelector('button[data-item ="checked"]').value
     );
   }
   if (countDown < 0) {
     clearInterval(interval);
     modal.style.display = "block";
     modal.children[0].children[0].innerHTML = "HAHA GÀ!";
+    modal.children[0].children[1].innerHTML = "";
   }
 };
 //close model
@@ -254,36 +257,15 @@ var scoreCal = () => {
     score.innerHTML = pFScore + cD * 10;
   }
 };
-
+//leaderboard rank
 leaderboard.addEventListener("click", (e) => {
-  modalLB.style.display = "block";
+  if (countDown == 100) {
+    modalLB.style.display = "block";
+  }else{
+    e.preventDefault();
+  }
 });
 
-//leaderboard rank
-// let scoreArr = [];
-// let tbody = document.getElementById('tbody');
-// let trElement = document.getElementsByTagName('tr');
-// var lBRank = (score) => {
-//   scoreArr.push(score);
-//   scoreArr = scoreArr.sort();
-//   while (tbody.hasChildNodes()) {
-//     tbody.removeChild(tbody.firstChild);
-//   }
-//   let j = 0;
-//   for (let i = scoreArr.length - 1; i >= 0; i--) {
-//     let tr = document.createElement("tr");
-//     tbody.appendChild(tr);
-//     let td1 = document.createElement("td");
-//     let td2 = document.createElement("td");
-//     let td3 = document.createElement("td");
-//     td1.innerText = ++j ;
-//     td2.innerText = scoreArr[i];
-//     td3.innerText = new Date();
-//     tr.appendChild(td1);
-//     tr.appendChild(td2);
-//     tr.appendChild(td3);
-//   }
-// }
 //object contructor
 class Player {
   constructor(score, level) {
@@ -291,29 +273,60 @@ class Player {
     this.level = level;
   }
 }
-//leaderboard rank
-let tbody = document.getElementById('tbody');
-let trElement = document.getElementsByTagName('tr');
+
+var filterLevel = (level, arrs) => {
+  const result = arrs.filter((arr) => arr.level == level);
+  return result;
+};
+
+let tbody = document.getElementById("tbody");
+let trElement = document.getElementsByTagName("tr");
 let playerArr = [];
+
 var lBRank = (score, level) => {
-  let lB = new Player(score, level);
-  playerArr.push(lB);
-  playerArr = playerArr.sort((a, b) => {
+  playerArr.push(new Player(score, level));
+  dataRendering();
+};
+
+// rank
+let navClick = document.querySelector("#user-nav-tabs");
+let childrenClick = navClick.children;
+for (let i = 0; i < childrenClick.length; i++) {
+  //nav tab
+  childrenClick[i].addEventListener("click", (e) => {
+    childrenClick[i].className = "active";
+    for (let j = 0; j < childrenClick.length; j++) {
+      if (i != j) {
+        childrenClick[j].className = "";
+      }
+    }
+    dataRendering();
+  });
+}
+
+//render data with level
+let dataRendering = () => {
+  let activeClass = document.querySelector(".active");
+  activeID = activeClass.id.split("#").join("");
+  var playerArrFilter = filterLevel(activeID, playerArr);
+  console.log(playerArrFilter);
+  playerArrFilter = playerArrFilter.sort((a, b) => {
     return b.score - a.score;
   });
+  //clear old data
   while (tbody.hasChildNodes()) {
     tbody.removeChild(tbody.firstChild);
   }
-  let j = 0;
-  for (let i = 0; i < playerArr.length; i++) {
+  //render new data
+  for (let i = 0; i < playerArrFilter.length; i++) {
     let tr = document.createElement("tr");
     tbody.appendChild(tr);
     let td1 = document.createElement("td");
     let td2 = document.createElement("td");
     let td3 = document.createElement("td");
-    td1.innerText = i+1;
-    td2.innerText = playerArr[i].score;
-    td3.innerText = playerArr[i].level;
+    td1.innerText = i + 1;
+    td2.innerText = playerArrFilter[i].score;
+    td3.innerText = playerArrFilter[i].level;
     tr.appendChild(td1);
     tr.appendChild(td2);
     tr.appendChild(td3);

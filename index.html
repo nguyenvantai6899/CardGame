@@ -35,11 +35,11 @@
               RESET ?
             </button>
           </form> -->
-            <button type="button" class="level" value ="easy">Easy</button><br>
-            <button type="button" class="level" value ="normal">Normal</button><br>
-            <button type="button" class="level" value ="hard">Hard</button><br>
-            <button type="button" class="start-game">START</button>
-
+          <button type="button" class="level" value="easy">Easy</button><br />
+          <button type="button" class="level" value="normal">Normal</button
+          ><br />
+          <button type="button" class="level" value="hard">Hard</button><br />
+          <button type="button" class="start-game">START</button>
         </div>
         <div class="container"></div>
         <div class="center-play-progress">
@@ -60,13 +60,12 @@
           </div>
           <div class="score-level">
             <div class="score-level-title">Score</div>
-            <div class="score-achieve">
-            </div>
+            <div class="score-achieve"></div>
           </div>
         </div>
         <div class="leader-board">
-          <i class="fa-solid fa-ranking-star fa-2x" ></i>
-          <span class="my-leader-board" style="margin-left: 10px;">
+          <i class="fa-solid fa-ranking-star fa-2x"></i>
+          <span class="my-leader-board" style="margin-left: 10px">
             Leaderboard
           </span>
         </div>
@@ -84,22 +83,36 @@
     <div id="modalLeaderboard" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Score</th>
-              <th>Level</th>
-            </tr>
-          </thead>
-          <tbody id="tbody">
-            <tr></tr>
-          </tbody>
-        </table>
+        <div id="tabs">
+          <ul id="user-nav-tabs">
+            <li class="active" id="#easy">
+              Easy
+            </li>
+            <li class="" id="#normal">
+              Normal
+            </li>
+            <li class="" id="#hard">
+              Hard
+            </li>
+          </ul>
+        </div>
+        <div id="content">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Score</th>
+                <th>Level</th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+              <tr></tr>
+            </tbody>
+          </table>
+        </div>
         <button class="close">Close</button>
       </div>
     </div>
-
   </body>
   <script src="main.js"></script>
 </html>

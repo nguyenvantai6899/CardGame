@@ -61,6 +61,7 @@ body {
 }
 /* leaderboard */
 .leader-board{
+  cursor: zoom-in;
   text-align: center;
   margin-top: 10px;
   padding: 20px 0px;
@@ -297,5 +298,49 @@ body {
 .level[data-item = 'unchecked'] {
   background-color: '';
   color: '';
+}
+
+table, td, th {
+  border: 1px solid #ddd;
+  text-align: left;
+      white-space: nowrap;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th, td {
+  padding: 15px;
+}
+table tbody tr:nth-child(odd) {
+  background: #e2e2e2;
+}
+
+/* nav tab */
+#user-nav-tabs {
+  display: flex;
+  padding-inline-start: 0px;
+  list-style: none;
+}
+#user-nav-tabs li{
+  margin: 0px 10px;
+  cursor: pointer;
+  padding: 15px;
+}
+.active {
+  border: 1px  solid;
+  border-radius: 5px;
+  padding: 15px;
+
+}
+
+#tabs { margin: 2em; }
+#content { margin: 2em; }
+
+#content2,
+#content3 { display: none; }
+
+#user-nav-tabs ol {
+  padding: 5px;
 }
 
