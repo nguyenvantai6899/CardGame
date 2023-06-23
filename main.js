@@ -309,7 +309,6 @@ let dataRendering = () => {
   let activeClass = document.querySelector(".active");
   activeID = activeClass.id.split("#").join("");
   var playerArrFilter = filterLevel(activeID, playerArr);
-  console.log(playerArrFilter);
   playerArrFilter = playerArrFilter.sort((a, b) => {
     return b.score - a.score;
   });
